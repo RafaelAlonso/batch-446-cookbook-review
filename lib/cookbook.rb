@@ -22,6 +22,12 @@ class Cookbook
     save_recipes_to_csv
   end
 
+  def mark_recipe(position_to_mark)
+    recipe = @recipes[position_to_mark]
+    recipe.mark_as_done!
+    save_recipes_to_csv
+  end
+
   def remove_recipe(delete_position)
     @recipes.delete_at(delete_position)
     save_recipes_to_csv
@@ -35,7 +41,7 @@ class Cookbook
       # pegar cada uma das recipes da array (@recipes)...
       @recipes.each do |recipe|
         # ... e colocar ela dentro do meu arquivo
-        csv << [recipe.name, recipe.description]
+        csv << [recipe.name, recipe.description, recipe.prep_time, recipe.done?]
       end
     end
   end
@@ -47,7 +53,7 @@ class Cookbook
       # ex.: ['Crumpets', 'Crumpets description']
 
       # criar uma receita com as infos da linha
-      recipe_from_csv = Recipe.new(row[0], row[1])
+      recipe_from_csv = Recipe.new(row[0], row[1], row[2], row[3])
       # armazenar a nova receita
       @recipes << recipe_from_csv
     end
